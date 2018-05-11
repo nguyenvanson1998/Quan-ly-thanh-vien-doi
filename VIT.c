@@ -1,0 +1,131 @@
+#include<stdio.h>
+#include<string.h>
+#define SIZE 100
+
+typedef struct {
+	char name[51];
+	int age;
+	int ID;
+	int group_ID;
+} member ;
+
+void input(member *tv)
+{
+	printf("Nhap vao so hieu thanh vien: ");
+	scanf("%d", &tv->ID);
+	while (getchar()!='\n');
+	printf("Nhap vao ten thanh vien: ");
+	gets(tv->name);
+	do{printf("Nhap vao tuoi cua thanh vien: ");
+	scanf("%d", &tv->age);
+	while (getchar()!='\n');
+	if((tv->age<0)&&(tv->age>100)) printf("Nhap lai so tuoi!\n");
+	}
+	while((tv->age<0)&&(tv->age>110));
+	printf("Nhap vao group_ID: ");
+	scanf("%d", &tv->group_ID);
+	while (getchar()!='\n');
+}
+
+void output(member *tv)
+{
+	printf("%-35s\t%-7d\t%-5d\t%-9d\n",tv->name, tv->age, tv->ID, tv->group_ID);
+}
+
+int find(member *tv, char *ten, int size)
+{
+	int count=0;
+	while (strcmp(tv->name, ten)!=0);
+	{
+	count ++;
+	tv++;
+	}
+	count;
+}
+
+void del(member *tv)
+{
+	strcpy(tv->name, (tv+1)->name);
+	tv->age=(tv+1)->age;
+	tv->group_ID=(tv+1)->group_ID;
+	tv->ID=(tv+1)->ID;
+}                 
+
+void edit(member *tv)
+{
+	printf("Nhap lai so hieu thanh vien: ");
+	scanf("%d", &tv->ID);
+	while (getchar()!='\n');
+	printf("Nhap lai ten thanh vien: ");
+	gets(tv->name);
+	do{printf("Nhap lai tuoi cua thanh vien: ");
+	scanf("%d", &tv->age);
+	while (getchar()!='\n');
+	if((tv->age<0)&&(tv->age>100)) printf("Nhap lai so tuoi!\n");
+	}
+	while((tv->age<0)&&(tv->age>110));
+	printf("Nhap lai group_ID: ");
+	scanf("%d", &tv->group_ID);
+	while (getchar()!='\n');	
+}
+void main()
+{
+	char hoten[51];
+	member tv[SIZE];
+	int stt=0;
+	char choice;
+	//Menu
+	printf("Chuong trinh quan ly thanh vien doi SVTN vien CNTT&TT: \n");
+	do{
+	printf("Menu: \n");
+	printf("1. Them thanh vien\n");
+	printf("2. In thong tin thanh vien\n");
+	printf("3. Tim kiem thong tin thanh vien\n");
+	printf("4. Xoa thanh vien\n");
+	printf("5. Chinh sua thong tin thanh vien\n");
+	printf("6. Thoat\n");
+	printf("Moi ban nhap vao lua chon: ");
+	scanf("%c", &choice);
+	while(getchar()!='\n');
+	switch (choice)
+	{
+		case '1': printf("Them thanh vien\n");
+			input(&tv[stt]);
+			stt++;
+			printf("\n");
+			break;
+		case '2': printf("In thong tin thanh vien\n");
+			int i;
+			printf("%-35s\t%-7s\t%-5s\t%-9s\n", "Ho ten", "Tuoi", "ID", "Group_ID");
+			for (i=0; i<stt; i++)
+			output(&tv[i]);
+			printf("\n");
+			break;
+		case '3': printf("Tim kiem thong tin thanh vien\n");
+			printf("Nhap vao ten thanh vien can tim: ");
+			gets(hoten);
+			printf("%-35s\t%-7s\t%-5s\t%-9s\n", "Ho ten", "Tuoi", "ID", "Group_ID");
+			output(&tv[find( tv, hoten, stt)]); 
+			break;
+		case '4': printf("Xoa thanh vien:\n");
+			printf("Nhap vao ten thanh vien can xoa: ");
+			gets(hoten);
+			int num;
+			stt--;
+			num=find(tv, hoten, stt);
+			for (i=num; i<stt;i++)
+				del(&tv[i]);
+			printf("Da xoa thanh vien!\n");
+			break;
+		case '5': printf("Chinh sua thong tin thanh vien:\n"); 
+			printf("Nhap ten thanh vien can sua thong tin: ");
+			gets(hoten);
+			num=find(tv, hoten, stt);
+			edit(&tv[num]);
+			printf("Da sua xong thong tin thanh vien! \n");
+			break;
+		case '6': printf("Ban da chon che do thoat khoi chuong trinh!\n"); break;
+		default:  printf("Moi ban nhap lai lua chon tu 1 den 6!\n"); break;
+	}
+		}while (choice!='6');
+}
